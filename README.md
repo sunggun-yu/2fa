@@ -1,12 +1,17 @@
 2fa is a two-factor authentication agent.
 
-Usage:
+Installation:
 
-    go get -u rsc.io/2fa
+```bash
+brew install sunggun-yu/tap/twofa
+```
+
+Usage:
 
     2fa -add [-7] [-8] [-hotp] name
     2fa -list
     2fa name
+    2fa -v # prints current version
 
 `2fa -add name` adds a new key to the 2fa keychain with the given name. It
 prints a prompt to standard error and reads a two-factor key from standard

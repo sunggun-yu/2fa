@@ -84,12 +84,16 @@ import (
 )
 
 var (
-	flagAdd  = flag.Bool("add", false, "add a key")
-	flagList = flag.Bool("list", false, "list keys")
-	flagHotp = flag.Bool("hotp", false, "add key as HOTP (counter-based) key")
-	flag7    = flag.Bool("7", false, "generate 7-digit code")
-	flag8    = flag.Bool("8", false, "generate 8-digit code")
-	flagClip = flag.Bool("clip", false, "copy code to the clipboard")
+	version     = "dev"
+	commit      = "none"
+	date        = "unknown"
+	flagAdd     = flag.Bool("add", false, "add a key")
+	flagList    = flag.Bool("list", false, "list keys")
+	flagHotp    = flag.Bool("hotp", false, "add key as HOTP (counter-based) key")
+	flag7       = flag.Bool("7", false, "generate 7-digit code")
+	flag8       = flag.Bool("8", false, "generate 8-digit code")
+	flagClip    = flag.Bool("clip", false, "copy code to the clipboard")
+	flagVersion = flag.Bool("v", false, "prints current 2fa version")
 )
 
 func usage() {
@@ -97,7 +101,13 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "\t2fa -add [-7] [-8] [-hotp] keyname\n")
 	fmt.Fprintf(os.Stderr, "\t2fa -list\n")
 	fmt.Fprintf(os.Stderr, "\t2fa [-clip] keyname\n")
+	fmt.Fprintf(os.Stderr, "\t2fa -v #prints the version\n")
+	printVersion()
 	os.Exit(2)
+}
+
+func printVersion() {
+	fmt.Printf("2fa %s, commit %s, built at %s\n", version, commit, date)
 }
 
 func main() {
@@ -105,6 +115,11 @@ func main() {
 	log.SetFlags(0)
 	flag.Usage = usage
 	flag.Parse()
+
+	if *flagVersion {
+		printVersion()
+		os.Exit(0)
+	}
 
 	k := readKeychain(filepath.Join(os.Getenv("HOME"), ".2fa"))
 
